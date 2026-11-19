@@ -18,7 +18,7 @@ Edita `.env` con tu usuario/contraseña de MariaDB y un `JWT_SECRET` propio. Lue
 ```
 npm run dev
 ```
-Debe imprimir: `API Finery en http://localhost:3000 (base de datos conectada)`.
+
 
 ## 3. Frontend (raíz del proyecto), en otra terminal
 ```
