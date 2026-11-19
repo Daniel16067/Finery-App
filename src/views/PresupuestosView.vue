@@ -3,9 +3,9 @@ import { ref, computed, onMounted } from 'vue'
 import Sidebar from '../components/Sidebar.vue'
 import { api } from '../api'
 
-// ==========================================
+  
 // 1. PRESUPUESTO MENSUAL TOTAL (SALARIO)
-// ==========================================
+
 const salarioTotal = ref(0)
 
 const guardarSalario = async () => {
@@ -16,9 +16,9 @@ const guardarSalario = async () => {
   }
 }
 
-// ==========================================
+
 // 2. PRESUPUESTOS (PORCENTAJES)
-// ==========================================
+
 const presupuestos = ref([])
 
 const porcentajeTotalAsignado = computed(() => {
@@ -185,9 +185,9 @@ const guardarEdicionPresupuesto = async () => {
   }
 }
 
-// ==========================================
+
 // 3. METAS PERSONALES
-// ==========================================
+
 const metas = ref([])
 
 const calcularPorcentajeMeta = (meta) => {
@@ -352,9 +352,8 @@ const cancelarEliminacion = () => {
   pasodeEliminacion.value = 0
 }
 
-// ==========================================
 // CARGA INICIAL DESDE LA BASE DE DATOS
-// ==========================================
+
 const cargarTodo = async () => {
   try {
     const [yo, listaPresupuestos, listaMetas] = await Promise.all([
@@ -429,9 +428,9 @@ onMounted(cargarTodo)
           </div>
         </div>
 
-        <!-- ========================================== -->
+       
         <!-- SECCIÓN DE PRESUPUESTOS                    -->
-        <!-- ========================================== -->
+       
         <div class="d-flex justify-content-between align-items-center mb-3">
           <div>
             <h3 class="fw-bold mb-0">Presupuestos</h3>
