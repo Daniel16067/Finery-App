@@ -1,8 +1,4 @@
--- =====================================================================
---  FINERY APP - Script de creación de base de datos
---  Motor: MySQL 8.0+ (compatible con MariaDB 10.5+)
---  Basado en el diagrama entidad-relación proporcionado
--- =====================================================================
+
 
 DROP DATABASE IF EXISTS finery_db;
 CREATE DATABASE finery_db
@@ -10,11 +6,6 @@ CREATE DATABASE finery_db
   COLLATE utf8mb4_unicode_ci;
 USE finery_db;
 
--- ---------------------------------------------------------------------
--- 1. USUARIO
---    contrasena y google_id son opcionales: el usuario puede registrarse
---    con correo/contraseña o con Google (la contraseña se guarda HASHEADA).
--- ---------------------------------------------------------------------
 CREATE TABLE usuario (
   id_usuario      INT UNSIGNED  NOT NULL AUTO_INCREMENT,
   nombre_completo VARCHAR(120)  NOT NULL,
@@ -45,9 +36,7 @@ CREATE TABLE presupuesto (
   CONSTRAINT ck_presupuesto_porcentaje CHECK (porcentaje BETWEEN 0 AND 100)
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------------------
--- 3. TIPO_PAGO (catálogo)
--- ---------------------------------------------------------------------
+
 CREATE TABLE tipo_pago (
   id_tipo_pago INT UNSIGNED NOT NULL AUTO_INCREMENT,
   nombre       VARCHAR(50)  NOT NULL,
@@ -55,10 +44,7 @@ CREATE TABLE tipo_pago (
   UNIQUE KEY uk_tipo_pago_nombre (nombre)
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------------------
--- 4. MOVIMIENTO (gastos del usuario)
---    id_presupuesto es opcional: en la app hay movimientos sin presupuesto.
--- ---------------------------------------------------------------------
+
 CREATE TABLE movimiento (
   id_movimiento  INT UNSIGNED  NOT NULL AUTO_INCREMENT,
   id_usuario     INT UNSIGNED  NOT NULL,
@@ -102,9 +88,7 @@ CREATE TABLE meta_personal (
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- 6. AHORRO_COMPARTIDO
---    icono = clase de Bootstrap Icons (ej. 'bi-airplane-engines')
---    color = hexadecimal (ej. '#FF5722')
+-- 6. AHORRO_COMPARTIDO 
 -- ---------------------------------------------------------------------
 CREATE TABLE ahorro_compartido (
   id_ahorro      INT UNSIGNED  NOT NULL AUTO_INCREMENT,
@@ -227,46 +211,3 @@ INSERT INTO tipo_pago (nombre) VALUES
   ('Tarjeta de Crédito'),
   ('Transferencia');
 
--- =====================================================================
---  DATOS DE PRUEBA (opcional: bórralos en producción)
---  Las contraseñas deben guardarse con hash (bcrypt/argon2) desde el backend.
--- =====================================================================
-INSERT INTO usuario (nombre_completo, correo, contrasena, salario_mensual) VALUES
-  ('Usuario Demo',  'demo@finery.com',           '$2b$10$HASH_DE_EJEMPLO_REEMPLAZAR', 2500),
-  ('Carlos Méndez', 'carlos.mendez@correo.com',  '$2b$10$HASH_DE_EJEMPLO_REEMPLAZAR', 3000),
-  ('Laura Gómez',   'laura.gomez@correo.com',    '$2b$10$HASH_DE_EJEMPLO_REEMPLAZAR', 2800),
-  ('Andrés Ruiz',   'andres.ruiz@correo.com',    '$2b$10$HASH_DE_EJEMPLO_REEMPLAZAR', 2600);
-
-INSERT INTO presupuesto (id_usuario, nombre, porcentaje) VALUES
-  (1, 'Presupuesto de Alquiler',      40),
-  (1, 'Presupuesto de Ahorro',        25),
-  (1, 'Presupuesto de Alimentación',  25);
-
-INSERT INTO movimiento (id_usuario, id_tipo_pago, id_presupuesto, concepto, monto, fecha) VALUES
-  (1, 3, NULL, 'Suscripción de Internet', 45,  '2026-09-14'),
-  (1, 1, 3,    'Compra de Alimentos',     120, '2026-09-13'),
-  (1, 2, NULL, 'Gasolina',                40,  '2026-09-12'),
-  (1, 4, NULL, 'Servicio de Energía',     55,  '2026-09-09');
-
-INSERT INTO meta_personal (id_usuario, nombre, monto_objetivo, monto_ahorrado) VALUES
-  (1, 'Fondo de emergencia', 5000, 1200);
-
-INSERT INTO ahorro_compartido (nombre, icono, color, monto_objetivo) VALUES
-  ('Viaje a Cartagena', 'bi-airplane-engines', '#FF5722', 6000);
-
-INSERT INTO participante_ahorro (id_ahorro, id_usuario, estado) VALUES
-  (1, 1, 'Compartiendo'),
-  (1, 2, 'Compartiendo'),
-  (1, 3, 'Compartiendo'),
-  (1, 4, 'Pendiente');
-
-INSERT INTO aporte_ahorro (id_ahorro, id_usuario, monto) VALUES
-  (1, 1, 300),
-  (1, 2, 450),
-  (1, 3, 200);
-
-INSERT INTO notificacion (id_usuario, id_remitente, id_ahorro, tipo, titulo, mensaje) VALUES
-  (4, 1, 1, 'invitacion', 'Invitación a Ahorro Compartido',
-      'Usuario Demo te invitó a participar en "Viaje a Cartagena".'),
-  (1, 2, 1, 'aporte', 'Nuevo aporte',
-      'Carlos Méndez aportó $450 a "Viaje a Cartagena".');
