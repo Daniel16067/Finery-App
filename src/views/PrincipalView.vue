@@ -2,9 +2,10 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import Sidebar from '../components/Sidebar.vue'
-import { api, cambiosAhorro } from '../api'
+import { api, cambiosAhorro, getUsuario } from '../api'
 
 const router = useRouter()
+const nombreUsuario = ref(getUsuario()?.nombre?.trim().split(/\s+/)[0] || '')
 
 // ==========================================
 // 1. ESTADO REACTIVO DE LA LISTA DE GASTOS
@@ -33,6 +34,7 @@ const cargarPresupuesto = async () => {
   try {
     const yo = await api('/auth/me')
     presupuesto.value = yo.salario
+    nombreUsuario.value = yo.nombre?.trim().split(/\s+/)[0] || ''
   } catch (e) {
     window.alert(e.message)
   }
@@ -248,7 +250,7 @@ const confirmarAbono = async () => {
       <div class="col-md-9 col-lg-10 p-4 p-md-5 text-white" style="background-color: #121212;">
         
         <div class="mb-4">
-          <h2 class="fw-bold">Bienvenido de nuevo, usuario.</h2>
+          <h2 class="fw-bold">Bienvenido de nuevo, {{ nombreUsuario }}.</h2>
           <p class="text-white-50">Registra y administra tus gastos diarios fácilmente.</p>
         </div>
 
